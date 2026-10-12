@@ -1,0 +1,29 @@
+{
+  "name": "rakumachi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "setup:browser": "playwright install chromium",
+    "test:browser": "node test/smoke.mjs",
+    "test": "node --test test/*.test.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tacotacoson-wq/rakumachi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/tacotacoson-wq/rakumachi/issues"
+  },
+  "homepage": "https://github.com/tacotacoson-wq/rakumachi#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "express": "^5.3.0",
+    "playwright": "^1.64.0"
+  }
+}
