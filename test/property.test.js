@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { money, calculate, parseProperty } from '../lib/property.js';
-import { safeUrl } from '../lib/scraper.js';
+import { safeUrl, checkResponse } from '../lib/scraper.js';
 test('Japanese prices preserve mixed units and zero fees',()=>{
   assert.equal(money('1億2,500万円'),125000000);
   assert.equal(money('7万5000円'),75000);
@@ -25,4 +25,9 @@ test('detail table extraction keeps all available fields',()=>{
 });
 test('source URL rejects arbitrary hosts and credentials',()=>{
   for(const u of ['http://www.rakumachi.jp/syuuekibukken/','https://evil.com/syuuekibukken/','https://user:pass@www.rakumachi.jp/syuuekibukken/'])assert.throws(()=>safeUrl(u));
+});
+test('denial reports stage and source URL, successful response proceeds',()=>{
+  checkResponse(200, 'https://www.rakumachi.jp/syuuekibukken/', '検索結果 1 ページ目');
+  assert.throws(()=>checkResponse(403, 'https://www.rakumachi.jp/syuuekibukken/', '検索結果 1 ページ目'), error=>error.status===403 && error.message.includes('検索結果 1 ページ目') && error.message.includes('https://www.rakumachi.jp/syuuekibukken/') && error.message.includes('停止'));
+  assert.throws(()=>checkResponse(403, 'https://www.rakumachi.jp/syuuekibukken/x/1/show.html', '物件の詳細ページ'), /物件の詳細ページ/);
 });
